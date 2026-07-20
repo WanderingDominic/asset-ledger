@@ -355,33 +355,6 @@
       <section class="summary" id="summary"></section>
       <div class="grid">
         <section class="card">
-          <h2>☁ 云同步设置</h2>
-
-          <div class="field">
-            <label>GitHub Token</label>
-            <input id="githubToken" type="password" />
-          </div>
-
-          <div class="field">
-            <label>Gist ID</label>
-            <input id="gistId" />
-          </div>
-
-          <div class="row">
-            <button class="primary" onclick="saveCloudSettings()">
-              保存配置
-            </button>
-
-            <button onclick="testCloudConnection()">测试连接</button>
-
-            <button onclick="syncUpload()">上传云端</button>
-
-            <button onclick="syncDownload()">下载云端</button>
-          </div>
-
-          <div id="syncStatus" class="small">尚未同步</div>
-        </section>
-        <section class="card">
           <div class="chartRow">
             <div>
               <div class="between">
@@ -509,6 +482,33 @@
               删除当前记录
             </button>
           </div>
+        </section>
+        <section class="card">
+          <h2>☁ 云同步设置</h2>
+
+          <div class="field">
+            <label>GitHub Token</label>
+            <input id="githubToken" type="password" />
+          </div>
+
+          <div class="field">
+            <label>Gist ID</label>
+            <input id="gistId" />
+          </div>
+
+          <div class="row">
+            <button class="primary" onclick="saveCloudSettings()">
+              保存配置
+            </button>
+
+            <button onclick="testCloudConnection()">测试连接</button>
+
+            <button onclick="syncUpload()">上传云端</button>
+
+            <button onclick="syncDownload()">下载云端</button>
+          </div>
+
+          <div id="syncStatus" class="small">尚未同步</div>
         </section>
         <section class="card">
           <h2>本版说明</h2>
