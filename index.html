@@ -1,0 +1,1545 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    manifest.json
+    <meta name="theme-color" content="#007aff" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>小龙资产账本 V4</title>
+    <style>
+      :root {
+        --bg: #f5f5f7;
+        --card: rgba(255, 255, 255, 0.78);
+        --text: #1d1d1f;
+        --muted: #6e6e73;
+        --line: #d2d2d7;
+        --blue: #007aff;
+        --purple: #8e5cff;
+        --pink: #ff2d92;
+        --green: #34c759;
+        --red: #ff3b30;
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+        --radius: 22px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+          Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        background:
+          radial-gradient(
+            circle at 12% 2%,
+            rgba(255, 45, 146, 0.18),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 75% 0%,
+            rgba(142, 92, 255, 0.22),
+            transparent 30%
+          ),
+          var(--bg);
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 1220px;
+        margin: 0 auto;
+        padding: 28px 18px 60px;
+      }
+      header {
+        padding: 32px 28px;
+        margin-bottom: 18px;
+        border-radius: 30px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.92),
+          rgba(255, 255, 255, 0.58)
+        );
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        position: relative;
+        overflow: hidden;
+      }
+      header:after {
+        content: "";
+        position: absolute;
+        right: -90px;
+        top: -130px;
+        width: 360px;
+        height: 360px;
+        border-radius: 50%;
+        background: linear-gradient(
+          145deg,
+          rgba(0, 122, 255, 0.2),
+          rgba(142, 92, 255, 0.28),
+          rgba(255, 45, 146, 0.16)
+        );
+      }
+      h1 {
+        font-size: 42px;
+        letter-spacing: -0.04em;
+        margin: 0 0 8px;
+        position: relative;
+        z-index: 1;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        padding: 20px;
+      }
+      .card h2 {
+        margin: 0 0 14px;
+        font-size: 21px;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .between {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      label {
+        font-size: 13px;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 6px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.88);
+        padding: 11px 12px;
+        font-size: 14px;
+        outline: none;
+      }
+      textarea {
+        min-height: 72px;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .cols4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-weight: 650;
+        font-size: 14px;
+        cursor: pointer;
+        background: #fff;
+        color: var(--text);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
+      }
+      button.primary {
+        background: linear-gradient(135deg, var(--blue), var(--purple));
+        color: white;
+      }
+      button.green {
+        background: var(--green);
+        color: white;
+      }
+      button.danger {
+        background: var(--red);
+        color: white;
+      }
+      button.ghost {
+        background: rgba(255, 255, 255, 0.55);
+        box-shadow: none;
+        border: 1px solid var(--line);
+      }
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .metric {
+        padding: 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.7);
+      }
+      .metric .k {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .metric .v {
+        font-size: 23px;
+        font-weight: 800;
+      }
+      .metric .delta {
+        font-size: 12px;
+        margin-top: 6px;
+        color: var(--muted);
+      }
+      .pos {
+        color: var(--green);
+      }
+      .neg {
+        color: var(--red);
+      }
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+      }
+      th {
+        text-align: left;
+        color: var(--muted);
+        font-size: 12px;
+        padding: 0 10px;
+      }
+      td {
+        background: rgba(255, 255, 255, 0.74);
+        padding: 12px 10px;
+        vertical-align: middle;
+      }
+      td:first-child {
+        border-radius: 14px 0 0 14px;
+      }
+      td:last-child {
+        border-radius: 0 14px 14px 0;
+      }
+      .money {
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+      }
+      .pill {
+        padding: 5px 9px;
+        border-radius: 999px;
+        background: rgba(0, 122, 255, 0.1);
+        color: #0057b8;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .empty {
+        text-align: center;
+        color: var(--muted);
+        padding: 32px;
+      }
+      .hide {
+        display: none !important;
+      }
+      .chartRow {
+        display: grid;
+        grid-template-columns: 1.35fr 0.65fr;
+        gap: 18px;
+      }
+      .chartBox {
+        height: 360px;
+        position: relative;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      .pieLegend {
+        display: grid;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .legendItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 9px 10px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.62);
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+      }
+      .account-line {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr 0.65fr 0.85fr 0.75fr 0.9fr auto;
+        gap: 8px;
+        margin-bottom: 8px;
+        align-items: end;
+        padding: 8px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.28);
+      }
+      .liability {
+        background: rgba(255, 59, 48, 0.055);
+      }
+      .hint {
+        padding: 12px 14px;
+        border-radius: 18px;
+        background: rgba(0, 122, 255, 0.07);
+        color: #27547f;
+        line-height: 1.7;
+        margin-bottom: 12px;
+      }
+      @media (max-width: 980px) {
+        .chartRow,
+        .cols,
+        .cols4 {
+          grid-template-columns: 1fr;
+        }
+        .summary {
+          grid-template-columns: 1fr 1fr;
+        }
+        .account-line {
+          grid-template-columns: 1fr;
+        }
+        .wrap {
+          padding: 14px 10px 45px;
+        }
+        h1 {
+          font-size: 32px;
+        }
+        .card {
+          padding: 15px;
+        }
+        table {
+          font-size: 13px;
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>小龙资产账本</h1>
+        <div class="sub">
+          V4：新增复制上一期记录、真正 .xlsx 导出、资产结构图表切换（饼图 /
+          堆叠图）。
+        </div>
+      </header>
+      <section class="summary" id="summary"></section>
+      <div class="grid">
+        <section class="card">
+          <h2>☁ 云同步设置</h2>
+
+          <div class="field">
+            <label>GitHub Token</label>
+            <input id="githubToken" type="password" />
+          </div>
+
+          <div class="field">
+            <label>Gist ID</label>
+            <input id="gistId" />
+          </div>
+
+          <div class="row">
+            <button class="primary" onclick="saveCloudSettings()">
+              保存配置
+            </button>
+
+            <button onclick="testCloudConnection()">测试连接</button>
+
+            <button onclick="syncUpload()">上传云端</button>
+
+            <button onclick="syncDownload()">下载云端</button>
+          </div>
+
+          <div id="syncStatus" class="small">尚未同步</div>
+        </section>
+        <section class="card">
+          <div class="chartRow">
+            <div>
+              <div class="between">
+                <h2>资产 / 净资产趋势</h2>
+                <div class="row">
+                  <select id="chartMetric" style="width: 180px">
+                    <option value="netWorth">净资产</option>
+                    <option value="totalAssets">总资产</option>
+                    <option value="liability">负债</option>
+                    <option value="cash">现金/银行卡</option>
+                    <option value="investment">投资账户</option>
+                    <option value="mandate">委托投资账户</option>
+                    <option value="other">其他资产</option></select
+                  ><button class="ghost" onclick="scrollToForm()">
+                    新增记录
+                  </button>
+                </div>
+              </div>
+              <div class="chartBox"><canvas id="lineChart"></canvas></div>
+            </div>
+            <div>
+              <div class="between">
+                <h2>资产结构图表</h2>
+                <select id="structureChartType" style="width: 150px">
+                  <option value="pie">最新分类占比</option>
+                  <option value="stacked">资产结构堆叠图</option>
+                </select>
+              </div>
+              <div class="chartBox"><canvas id="structureChart"></canvas></div>
+              <div id="pieLegend" class="pieLegend"></div>
+            </div>
+          </div>
+        </section>
+        <section class="card">
+          <div class="between">
+            <h2>历史记录</h2>
+            <div class="row">
+              <button class="ghost" onclick="exportXlsx()">导出 .xlsx</button
+              ><button class="ghost" onclick="exportExcel()">
+                导出旧版 .xls</button
+              ><button class="ghost" onclick="exportJson()">
+                导出备份 JSON</button
+              ><label
+                class="ghost"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  padding: 10px 16px;
+                  border-radius: 999px;
+                  cursor: pointer;
+                "
+                >导入备份 JSON<input
+                  type="file"
+                  accept=".json"
+                  onchange="importJson(event)"
+                  style="display: none"
+              /></label>
+            </div>
+          </div>
+          <div id="records"></div>
+        </section>
+        <section class="card" id="formCard">
+          <h2 id="formTitle">新增资产记录</h2>
+          <div class="cols">
+            <div class="field">
+              <label>记录日期</label><input id="date" type="date" />
+            </div>
+            <div class="field">
+              <label>记录名称</label
+              ><input id="title" placeholder="例如：2026年6月资产汇总" />
+            </div>
+          </div>
+          <div class="hint small">
+            汇率直接在每一条账户明细中填写：人民币填 CNY / 汇率 1，美元填 USD /
+            汇率 7.25。系统按“原币金额 × 汇率”自动折算为 CNY。
+          </div>
+          <div class="field">
+            <label>账户明细 / 负债明细</label>
+            <div id="accountLines"></div>
+            <button class="ghost" onclick="addAccountLine()">
+              + 添加账户或负债
+            </button>
+          </div>
+          <div class="cols4">
+            <div class="field">
+              <label>现金/银行卡合计 CNY</label
+              ><input id="cash" type="number" step="0.01" />
+            </div>
+            <div class="field">
+              <label>投资账户合计 CNY</label
+              ><input id="investment" type="number" step="0.01" />
+            </div>
+            <div class="field">
+              <label>委托投资账户合计 CNY</label
+              ><input id="mandate" type="number" step="0.01" />
+            </div>
+            <div class="field">
+              <label>其他资产合计 CNY</label
+              ><input id="other" type="number" step="0.01" />
+            </div>
+          </div>
+          <div class="cols">
+            <div class="field">
+              <label>负债合计 CNY</label
+              ><input id="liability" type="number" step="0.01" />
+            </div>
+            <div class="field">
+              <label>净资产 CNY</label><input id="netWorthPreview" readonly />
+            </div>
+          </div>
+          <div class="field">
+            <label>备注</label><textarea id="note"></textarea>
+          </div>
+          <div class="row">
+            <button class="primary" onclick="saveRecord()">保存记录</button
+            ><button class="ghost" onclick="copyLatestRecord()">
+              复制上一期记录并编辑金额</button
+            ><button class="ghost" onclick="resetForm()">清空表单</button
+            ><button
+              id="deleteEditing"
+              class="danger hide"
+              onclick="deleteCurrentEditing()"
+            >
+              删除当前记录
+            </button>
+          </div>
+        </section>
+        <section class="card">
+          <h2>本版说明</h2>
+          <p class="small" style="line-height: 1.8; margin-top: 0">
+            1.
+            “复制上一期记录并编辑金额”会复制最新一条记录的账户名称、类型、币种、汇率和金额，方便你直接修改本期金额。<br />2.
+            “导出 .xlsx”会生成真正的 Excel xlsx
+            文件，包含“资产汇总”和“账户明细”两个 Sheet。<br />3.
+            资产结构图表支持在“最新分类占比”和“资产结构堆叠图”之间切换。<br />4.
+            负债不计入资产结构，但会用于净资产计算。<br />5. JSON
+            备份用于完整恢复浏览器本地数据。
+          </p>
+          <div class="row">
+            <button class="green" onclick="fillDemo()">填入示例数据</button
+            ><button class="danger" onclick="clearAll()">清空全部数据</button>
+          </div>
+        </section>
+      </div>
+    </div>
+    <datalist id="currencyList">
+      <option value="CNY"></option>
+      <option value="USD"></option>
+      <option value="HKD"></option>
+      <option value="EUR"></option>
+      <option value="JPY"></option>
+      <option value="GBP"></option>
+      <option value="AUD"></option>
+      <option value="SGD"></option>
+    </datalist>
+    <script>
+      const KEY = "xiaolong_asset_ledger_v4",
+        OLD_KEYS = [
+          "xiaolong_asset_ledger_v3",
+          "xiaolong_asset_ledger_v2",
+          "xiaolong_asset_ledger_v1",
+        ];
+
+      const CLOUD_CONFIG_KEY = "xiaolong_cloud_config_v5";
+      let records = load(),
+        editingId = null;
+      const COLORS = {
+          cash: "#007aff",
+          investment: "#8e5cff",
+          mandate: "#ff2d92",
+          other: "#34c759",
+          liability: "#ff3b30",
+          netWorth: "#1d1d1f",
+          totalAssets: "#5856d6",
+        },
+        TYPE_NAME = {
+          cash: "现金/银行卡",
+          investment: "投资账户",
+          mandate: "委托投资账户",
+          other: "其他资产",
+          liability: "负债",
+        };
+      function num(v) {
+        return Number(v || 0);
+      }
+      function today() {
+        return new Date().toISOString().slice(0, 10);
+      }
+      function fmt(n) {
+        return new Intl.NumberFormat("zh-CN", {
+          style: "currency",
+          currency: "CNY",
+          maximumFractionDigits: 2,
+        }).format(num(n));
+      }
+      function shortMoney(v) {
+        v = num(v);
+        if (Math.abs(v) >= 1e8) return (v / 1e8).toFixed(1) + "亿";
+        if (Math.abs(v) >= 1e4) return (v / 1e4).toFixed(1) + "万";
+        return Math.round(v);
+      }
+      function esc(s) {
+        return String(s ?? "").replace(
+          /[&<>"]/g,
+          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m],
+        );
+      }
+      function migrateOld(r) {
+        return (r || []).map((x) => {
+          let y = { ...x };
+          y.mandate = num(y.mandate);
+          y.liability = num(y.liability);
+          y.totalAssets = num(
+            y.totalAssets ||
+              num(y.cash) + num(y.investment) + num(y.mandate) + num(y.other),
+          );
+          y.netWorth = num(y.netWorth || y.totalAssets - y.liability);
+          const rates = y.rates || { CNY: 1 };
+          y.accounts = (y.accounts || []).map((a) => {
+            const currency = (a.currency || "CNY").toUpperCase(),
+              rate = num(a.rate || rates[currency] || 1),
+              amount = num(a.amount);
+            return {
+              ...a,
+              currency,
+              rate,
+              amount,
+              baseAmount: num(a.baseAmount || amount * rate),
+            };
+          });
+          delete y.rates;
+          return y;
+        });
+      }
+      function load() {
+        try {
+          let v = JSON.parse(localStorage.getItem(KEY) || "null");
+          if (Array.isArray(v)) return migrateOld(v);
+          for (const k of OLD_KEYS) {
+            let o = JSON.parse(localStorage.getItem(k) || "null");
+            if (Array.isArray(o) && o.length) return migrateOld(o);
+          }
+          return [];
+        } catch (e) {
+          return [];
+        }
+      }
+      function persist() {
+        localStorage.setItem(KEY, JSON.stringify(records));
+        renderAll();
+      }
+      function accountTemplate(a = {}) {
+        const div = document.createElement("div");
+        div.className = "account-line";
+        div.innerHTML = `<div><label>名称</label><input class="acc-name" placeholder="招商银行 / 股票账户 / 房贷" value="${esc(a.name || "")}"></div><div><label>类型</label><select class="acc-type"><option value="cash">现金/银行卡</option><option value="investment">投资账户</option><option value="mandate">委托投资账户</option><option value="other">其他资产</option><option value="liability">负债</option></select></div><div><label>币种</label><input class="acc-currency" list="currencyList" value="${esc(a.currency || "CNY")}"></div><div><label>原币金额</label><input class="acc-amount" type="number" step="0.01" value="${a.amount ?? ""}"></div><div><label>汇率</label><input class="acc-rate" type="number" step="0.0001" value="${a.rate ?? 1}"></div><div><label>折算CNY</label><input class="acc-base" readonly value="${a.baseAmount ? Number(a.baseAmount).toFixed(2) : ""}"></div><button class="ghost" onclick="this.parentElement.remove();calcTotals()">删除</button>`;
+        div.querySelector(".acc-type").value = a.type || "cash";
+        div
+          .querySelectorAll("input,select")
+          .forEach((x) => x.addEventListener("input", calcTotals));
+        div.querySelector(".acc-type").addEventListener("change", () => {
+          div.classList.toggle(
+            "liability",
+            div.querySelector(".acc-type").value === "liability",
+          );
+          calcTotals();
+        });
+        if ((a.type || "") === "liability") div.classList.add("liability");
+        return div;
+      }
+      function addAccountLine(a) {
+        accountLines.appendChild(accountTemplate(a));
+        calcTotals();
+      }
+      function lines() {
+        return [...document.querySelectorAll(".account-line")];
+      }
+      function getAccounts() {
+        return lines()
+          .map((l) => {
+            const currency = (l.querySelector(".acc-currency").value || "CNY")
+                .trim()
+                .toUpperCase(),
+              amount = num(l.querySelector(".acc-amount").value),
+              rate = num(l.querySelector(".acc-rate").value || 1);
+            return {
+              name: l.querySelector(".acc-name").value.trim(),
+              type: l.querySelector(".acc-type").value,
+              currency,
+              amount,
+              rate,
+              baseAmount: amount * rate,
+            };
+          })
+          .filter((a) => a.name || a.amount);
+      }
+      function calcTotals() {
+        const sums = {
+          cash: 0,
+          investment: 0,
+          mandate: 0,
+          other: 0,
+          liability: 0,
+        };
+        lines().forEach((l) => {
+          const type = l.querySelector(".acc-type").value,
+            base =
+              num(l.querySelector(".acc-amount").value) *
+              num(l.querySelector(".acc-rate").value || 1);
+          l.querySelector(".acc-base").value = base ? base.toFixed(2) : "";
+          sums[type] += base;
+        });
+        ["cash", "investment", "mandate", "other", "liability"].forEach((k) => {
+          const el = document.getElementById(k);
+          if (document.activeElement !== el)
+            el.value = sums[k] ? sums[k].toFixed(2) : "";
+        });
+        netWorthPreview.value = fmt(
+          sums.cash +
+            sums.investment +
+            sums.mandate +
+            sums.other -
+            sums.liability,
+        );
+      }
+      function saveRecord() {
+        calcTotals();
+        const rec = {
+          id: editingId || Date.now().toString(),
+          date: date.value || today(),
+          title: title.value.trim() || (date.value || today()) + " 资产汇总",
+          cash: num(cash.value),
+          investment: num(investment.value),
+          mandate: num(mandate.value),
+          other: num(other.value),
+          liability: num(liability.value),
+          note: note.value.trim(),
+          accounts: getAccounts(),
+        };
+        rec.totalAssets = rec.cash + rec.investment + rec.mandate + rec.other;
+        rec.netWorth = rec.totalAssets - rec.liability;
+        if (editingId)
+          records = records.map((r) => (r.id === editingId ? rec : r));
+        else records.push(rec);
+        records.sort((a, b) => a.date.localeCompare(b.date));
+        persist();
+        autoSync();
+        resetForm();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      function copyLatestRecord() {
+        if (!records.length) {
+          alert("暂无上一期记录可复制。");
+          return;
+        }
+        const r = records[records.length - 1];
+        editingId = null;
+        formTitle.textContent = "新增资产记录";
+        deleteEditing.classList.add("hide");
+        date.value = today();
+        title.value = (date.value || today()) + " 资产汇总";
+        note.value = "复制自 " + r.date + "，请更新本期金额和汇率";
+        accountLines.innerHTML = "";
+        (r.accounts && r.accounts.length ? r.accounts : []).forEach((a) =>
+          addAccountLine({ ...a }),
+        );
+        if (!r.accounts || !r.accounts.length) addAccountLine();
+        calcTotals();
+        formCard.scrollIntoView({ behavior: "smooth" });
+      }
+      function editRecord(id) {
+        const r = records.find((x) => x.id === id);
+        if (!r) return;
+        editingId = id;
+        formTitle.textContent = "编辑资产记录";
+        deleteEditing.classList.remove("hide");
+        date.value = r.date;
+        title.value = r.title || "";
+        cash.value = r.cash || "";
+        investment.value = r.investment || "";
+        mandate.value = r.mandate || "";
+        other.value = r.other || "";
+        liability.value = r.liability || "";
+        note.value = r.note || "";
+        accountLines.innerHTML = "";
+        (r.accounts && r.accounts.length ? r.accounts : []).forEach(
+          addAccountLine,
+        );
+        if (!r.accounts || !r.accounts.length) addAccountLine();
+        calcTotals();
+        formCard.scrollIntoView({ behavior: "smooth" });
+      }
+      function resetForm() {
+        editingId = null;
+        formTitle.textContent = "新增资产记录";
+        deleteEditing.classList.add("hide");
+        date.value = today();
+        title.value = "";
+        cash.value = "";
+        investment.value = "";
+        mandate.value = "";
+        other.value = "";
+        liability.value = "";
+        note.value = "";
+        accountLines.innerHTML = "";
+        addAccountLine();
+        calcTotals();
+      }
+      function deleteRecord(id) {
+        if (confirm("确定删除这条记录吗？")) {
+          records = records.filter((r) => r.id !== id);
+          persist();
+        }
+      }
+      function deleteCurrentEditing() {
+        if (editingId) deleteRecord(editingId);
+        resetForm();
+      }
+      function renderSummary() {
+        const l = records[records.length - 1],
+          p = records[records.length - 2],
+          d = l && p ? l.netWorth - p.netWorth : 0;
+        summary.innerHTML = `<div class="metric"><div class="k">最新净资产</div><div class="v">${l ? fmt(l.netWorth) : "--"}</div><div class="delta">${l ? l.date : "暂无记录"}</div></div><div class="metric"><div class="k">总资产</div><div class="v">${l ? fmt(l.totalAssets) : "--"}</div><div class="delta">资产合计，不含负债</div></div><div class="metric"><div class="k">负债</div><div class="v neg">${l ? fmt(l.liability) : "--"}</div><div class="delta">贷款 / 信用卡等</div></div><div class="metric"><div class="k">净资产较上次</div><div class="v ${d >= 0 ? "pos" : "neg"}">${l && p ? (d >= 0 ? "+" : "") + fmt(d) : "--"}</div><div class="delta">${l && p ? p.date + " → " + l.date : "需要至少两条记录"}</div></div><div class="metric"><div class="k">记录数量</div><div class="v">${records.length}</div><div class="delta">定期记录更容易看趋势</div></div>`;
+      }
+      function renderRecords() {
+        const b = document.getElementById("records");
+        if (!records.length) {
+          b.innerHTML =
+            '<div class="empty">暂无记录。可以先填入一条资产汇总，或使用示例数据体验。</div>';
+          return;
+        }
+        b.innerHTML = `<table><thead><tr><th>日期</th><th>名称</th><th>净资产</th><th>总资产</th><th>负债</th><th>现金</th><th>投资</th><th>委托投资</th><th>其他</th><th>操作</th></tr></thead><tbody>${[
+          ...records,
+        ]
+          .reverse()
+          .map(
+            (r) =>
+              `<tr><td>${r.date}</td><td><span class="pill">${esc(r.title)}</span></td><td class="money">${fmt(r.netWorth)}</td><td>${fmt(r.totalAssets)}</td><td class="neg">${fmt(r.liability)}</td><td>${fmt(r.cash)}</td><td>${fmt(r.investment)}</td><td>${fmt(r.mandate)}</td><td>${fmt(r.other)}</td><td><button class="ghost" onclick="editRecord('${r.id}')">编辑</button> <button class="ghost" onclick="deleteRecord('${r.id}')">删除</button></td></tr>`,
+          )
+          .join("")}</tbody></table>`;
+      }
+      function setupCanvas(id) {
+        const c = document.getElementById(id),
+          box = c.parentElement,
+          ctx = c.getContext("2d"),
+          dpr = window.devicePixelRatio || 1;
+        c.width = box.clientWidth * dpr;
+        c.height = box.clientHeight * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, box.clientWidth, box.clientHeight);
+        return { ctx, w: box.clientWidth, h: box.clientHeight };
+      }
+      function drawLineChart() {
+        const { ctx, w, h } = setupCanvas("lineChart"),
+          m = chartMetric.value;
+        if (records.length < 2) {
+          ctx.fillStyle = "#6e6e73";
+          ctx.font = "15px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("至少需要两条记录才能形成折线趋势", w / 2, h / 2);
+          return;
+        }
+        const pad = { l: 64, r: 22, t: 24, b: 48 },
+          vals = records.map((r) => num(r[m]));
+        let min = Math.min(...vals),
+          max = Math.max(...vals);
+        if (min === max) {
+          min -= 1;
+          max += 1;
+        }
+        if (min > 0) min *= 0.96;
+        for (let i = 0; i < 5; i++) {
+          let yy = pad.t + (i * (h - pad.t - pad.b)) / 4;
+          ctx.strokeStyle = "rgba(0,0,0,.08)";
+          ctx.beginPath();
+          ctx.moveTo(pad.l, yy);
+          ctx.lineTo(w - pad.r, yy);
+          ctx.stroke();
+          ctx.fillStyle = "#6e6e73";
+          ctx.font = "12px sans-serif";
+          ctx.textAlign = "right";
+          ctx.fillText(
+            shortMoney(max - ((max - min) * i) / 4),
+            pad.l - 8,
+            yy + 4,
+          );
+        }
+        const x = (i) =>
+            pad.l + (i * (w - pad.l - pad.r)) / (records.length - 1),
+          y = (v) =>
+            h - pad.b - ((v - min) * (h - pad.t - pad.b)) / (max - min);
+        let g = ctx.createLinearGradient(0, 0, w, 0);
+        g.addColorStop(0, COLORS[m] || "#007aff");
+        g.addColorStop(1, "#8e5cff");
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        records.forEach((r, i) =>
+          i ? ctx.lineTo(x(i), y(vals[i])) : ctx.moveTo(x(i), y(vals[i])),
+        );
+        ctx.stroke();
+        ctx.fillStyle = "#6e6e73";
+        ctx.textAlign = "center";
+        records.forEach((r, i) => {
+          ctx.fillStyle = "#fff";
+          ctx.strokeStyle = COLORS[m] || "#007aff";
+          ctx.beginPath();
+          ctx.arc(x(i), y(vals[i]), 5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = "#6e6e73";
+          if (records.length <= 8 || i % Math.ceil(records.length / 8) === 0)
+            ctx.fillText(r.date.slice(2), x(i), h - 18);
+        });
+      }
+      function drawStructureChart() {
+        structureChartType.value === "stacked"
+          ? drawStackedChart()
+          : drawPieChart();
+      }
+      function drawStackedChart() {
+        const { ctx, w, h } = setupCanvas("structureChart");
+        pieLegend.innerHTML = "";
+        if (!records.length) {
+          ctx.fillStyle = "#6e6e73";
+          ctx.font = "15px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("暂无资产结构数据", w / 2, h / 2);
+          return;
+        }
+        const cats = ["cash", "investment", "mandate", "other"],
+          pad = { l: 44, r: 16, t: 24, b: 48 },
+          cw = w - pad.l - pad.r,
+          ch = h - pad.t - pad.b,
+          gap = 10,
+          n = records.length,
+          bw = Math.max(12, (cw - (n - 1) * gap) / n);
+        for (let i = 0; i <= 4; i++) {
+          let yy = pad.t + (i * ch) / 4;
+          ctx.strokeStyle = "rgba(0,0,0,.08)";
+          ctx.beginPath();
+          ctx.moveTo(pad.l, yy);
+          ctx.lineTo(w - pad.r, yy);
+          ctx.stroke();
+          ctx.fillStyle = "#6e6e73";
+          ctx.font = "11px sans-serif";
+          ctx.textAlign = "right";
+          ctx.fillText(100 - i * 25 + "%", pad.l - 6, yy + 4);
+        }
+        records.forEach((r, i) => {
+          const total =
+            num(r.totalAssets) || cats.reduce((s, k) => s + num(r[k]), 0);
+          let y = h - pad.b,
+            x = pad.l + i * (bw + gap);
+          cats.forEach((k) => {
+            const val = num(r[k]);
+            if (!total || !val) return;
+            const sh = (val / total) * ch;
+            ctx.fillStyle = COLORS[k];
+            ctx.fillRect(x, y - sh, bw, sh);
+            y -= sh;
+          });
+          ctx.fillStyle = "#6e6e73";
+          ctx.textAlign = "center";
+          if (n <= 6 || i % Math.ceil(n / 6) === 0)
+            ctx.fillText(r.date.slice(2, 7), x + bw / 2, h - 20);
+        });
+        pieLegend.innerHTML = cats
+          .map(
+            (k) =>
+              `<div class="legendItem"><span><i class="dot" style="background:${COLORS[k]}"></i>${TYPE_NAME[k]}</span><b>${records.length}期</b></div>`,
+          )
+          .join("");
+      }
+      function drawPieChart() {
+        const { ctx, w, h } = setupCanvas("structureChart"),
+          l = records[records.length - 1];
+        pieLegend.innerHTML = "";
+        if (!l || !l.totalAssets) {
+          ctx.fillStyle = "#6e6e73";
+          ctx.font = "15px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("暂无资产分类数据", w / 2, h / 2);
+          return;
+        }
+        const data = [
+            ["cash", l.cash],
+            ["investment", l.investment],
+            ["mandate", l.mandate],
+            ["other", l.other],
+          ].filter((x) => num(x[1]) > 0),
+          total = data.reduce((s, x) => s + num(x[1]), 0);
+        let start = -Math.PI / 2,
+          cx = w / 2,
+          cy = h / 2 - 8,
+          r = Math.min(w, h) * 0.32;
+        data.forEach(([k, v]) => {
+          const a = (num(v) / total) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.arc(cx, cy, r, start, start + a);
+          ctx.closePath();
+          ctx.fillStyle = COLORS[k];
+          ctx.fill();
+          start += a;
+        });
+        ctx.fillStyle = "rgba(255,255,255,.92)";
+        ctx.beginPath();
+        ctx.arc(cx, cy, r * 0.55, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#1d1d1f";
+        ctx.font = "700 16px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("总资产", cx, cy - 4);
+        ctx.font = "12px sans-serif";
+        ctx.fillStyle = "#6e6e73";
+        ctx.fillText(shortMoney(total), cx, cy + 16);
+        pieLegend.innerHTML = data
+          .map(
+            ([k, v]) =>
+              `<div class="legendItem"><span><i class="dot" style="background:${COLORS[k]}"></i>${TYPE_NAME[k]}</span><b>${Math.round((num(v) / total) * 100)}%</b></div>`,
+          )
+          .join("");
+      }
+      function renderAll() {
+        renderSummary();
+        renderRecords();
+        setTimeout(() => {
+          drawLineChart();
+          drawStructureChart();
+        }, 20);
+      }
+      function exportXlsx() {
+        if (!records.length) {
+          alert("暂无数据可导出");
+          return;
+        }
+        const summaryRows = [
+          [
+            "日期",
+            "名称",
+            "净资产CNY",
+            "总资产CNY",
+            "负债CNY",
+            "现金/银行卡CNY",
+            "投资账户CNY",
+            "委托投资账户CNY",
+            "其他资产CNY",
+            "备注",
+          ],
+        ];
+        records.forEach((r) =>
+          summaryRows.push([
+            r.date,
+            r.title,
+            r.netWorth,
+            r.totalAssets,
+            r.liability,
+            r.cash,
+            r.investment,
+            r.mandate,
+            r.other,
+            r.note,
+          ]),
+        );
+        const detailRows = [
+          [
+            "日期",
+            "记录名称",
+            "账户名称",
+            "类型",
+            "币种",
+            "原币金额",
+            "汇率",
+            "折算CNY",
+          ],
+        ];
+        records.forEach((r) =>
+          (r.accounts || []).forEach((a) =>
+            detailRows.push([
+              r.date,
+              r.title,
+              a.name,
+              TYPE_NAME[a.type] || a.type,
+              a.currency,
+              a.amount,
+              a.rate,
+              a.baseAmount,
+            ]),
+          ),
+        );
+        download(
+          buildXlsx([
+            { name: "资产汇总", rows: summaryRows },
+            { name: "账户明细", rows: detailRows },
+          ]),
+          "小龙资产账本_V4_" + today() + ".xlsx",
+        );
+      }
+      function buildXlsx(sheets) {
+        const files = {};
+        files["[Content_Types].xml"] =
+          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>' +
+          sheets
+            .map(
+              (s, i) =>
+                `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`,
+            )
+            .join("") +
+          "</Types>";
+        files["_rels/.rels"] =
+          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+        files["xl/workbook.xml"] =
+          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>' +
+          sheets
+            .map(
+              (s, i) =>
+                `<sheet name="${xmlEsc(s.name).slice(0, 31)}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`,
+            )
+            .join("") +
+          "</sheets></workbook>";
+        files["xl/_rels/workbook.xml.rels"] =
+          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+          sheets
+            .map(
+              (s, i) =>
+                `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`,
+            )
+            .join("") +
+          "</Relationships>";
+        sheets.forEach(
+          (s, i) =>
+            (files[`xl/worksheets/sheet${i + 1}.xml`] = sheetXml(s.rows)),
+        );
+        return zipStore(
+          files,
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        );
+      }
+      function sheetXml(rows) {
+        const cellRef = (r, c) => {
+          let s = "";
+          c++;
+          while (c) {
+            let m = (c - 1) % 26;
+            s = String.fromCharCode(65 + m) + s;
+            c = Math.floor((c - 1) / 26);
+          }
+          return s + r;
+        };
+        const body = rows
+          .map(
+            (row, ri) =>
+              `<row r="${ri + 1}">` +
+              row
+                .map((v, ci) => {
+                  const ref = cellRef(ri + 1, ci);
+                  if (typeof v === "number" && isFinite(v))
+                    return `<c r="${ref}"><v>${v}</v></c>`;
+                  return `<c r="${ref}" t="inlineStr"><is><t>${xmlEsc(v ?? "")}</t></is></c>`;
+                })
+                .join("") +
+              "</row>",
+          )
+          .join("");
+        return (
+          '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>' +
+          body +
+          "</sheetData></worksheet>"
+        );
+      }
+      function xmlEsc(v) {
+        return String(v).replace(
+          /[<>&"']/g,
+          (m) =>
+            ({
+              "<": "&lt;",
+              ">": "&gt;",
+              "&": "&amp;",
+              '"': "&quot;",
+              "'": "&apos;",
+            })[m],
+        );
+      }
+      function crc32(bytes) {
+        let c = ~0;
+        for (let b of bytes) {
+          c ^= b;
+          for (let k = 0; k < 8; k++) c = (c >>> 1) ^ (0xedb88320 & -(c & 1));
+        }
+        return ~c >>> 0;
+      }
+      function u16(n) {
+        return [n & 255, (n >>> 8) & 255];
+      }
+      function u32(n) {
+        return [n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255];
+      }
+      function zipStore(files, type) {
+        const enc = new TextEncoder();
+        let chunks = [],
+          central = [],
+          offset = 0;
+        Object.entries(files).forEach(([name, content]) => {
+          const nameB = enc.encode(name),
+            data = enc.encode(content),
+            crc = crc32(data),
+            local = [
+              ...u32(0x04034b50),
+              ...u16(20),
+              ...u16(0),
+              ...u16(0),
+              ...u16(0),
+              ...u16(0),
+              ...u32(crc),
+              ...u32(data.length),
+              ...u32(data.length),
+              ...u16(nameB.length),
+              ...u16(0),
+            ];
+          chunks.push(new Uint8Array(local), nameB, data);
+          const cent = [
+            ...u32(0x02014b50),
+            ...u16(20),
+            ...u16(20),
+            ...u16(0),
+            ...u16(0),
+            ...u16(0),
+            ...u16(0),
+            ...u32(crc),
+            ...u32(data.length),
+            ...u32(data.length),
+            ...u16(nameB.length),
+            ...u16(0),
+            ...u16(0),
+            ...u16(0),
+            ...u16(0),
+            ...u32(0),
+            ...u32(offset),
+          ];
+          central.push(new Uint8Array(cent), nameB);
+          offset += local.length + nameB.length + data.length;
+        });
+        const centralSize = central.reduce((s, a) => s + a.length, 0),
+          centralOffset = offset,
+          end = [
+            ...u32(0x06054b50),
+            ...u16(0),
+            ...u16(0),
+            ...u16(Object.keys(files).length),
+            ...u16(Object.keys(files).length),
+            ...u32(centralSize),
+            ...u32(centralOffset),
+            ...u16(0),
+          ];
+        return new Blob([...chunks, ...central, new Uint8Array(end)], { type });
+      }
+      function exportExcel() {
+        if (!records.length) {
+          alert("暂无数据可导出");
+          return;
+        }
+        let rows = [
+          [
+            "日期",
+            "名称",
+            "净资产CNY",
+            "总资产CNY",
+            "负债CNY",
+            "现金",
+            "投资",
+            "委托投资",
+            "其他",
+            "备注",
+            "账户明细",
+          ],
+        ];
+        records.forEach((r) =>
+          rows.push([
+            r.date,
+            r.title,
+            r.netWorth,
+            r.totalAssets,
+            r.liability,
+            r.cash,
+            r.investment,
+            r.mandate,
+            r.other,
+            r.note,
+            (r.accounts || [])
+              .map(
+                (a) =>
+                  `${a.name}(${TYPE_NAME[a.type]}):${a.amount} ${a.currency} × ${a.rate} = ${Number(a.baseAmount || 0).toFixed(2)} CNY`,
+              )
+              .join(" | "),
+          ]),
+        );
+        const html =
+          '<html><head><meta charset="UTF-8"></head><body><table border="1">' +
+          rows
+            .map(
+              (row) =>
+                "<tr>" +
+                row.map((cell) => "<td>" + esc(cell ?? "") + "</td>").join("") +
+                "</tr>",
+            )
+            .join("") +
+          "</table></body></html>";
+        download(
+          new Blob(["\ufeff" + html], { type: "application/vnd.ms-excel" }),
+          "小龙资产账本_V4_旧版xls_" + today() + ".xls",
+        );
+      }
+      function exportJson() {
+        download(
+          new Blob([JSON.stringify(records, null, 2)], {
+            type: "application/json",
+          }),
+          "小龙资产账本_V4备份_" + today() + ".json",
+        );
+      }
+      function importJson(e) {
+        const f = e.target.files[0];
+        if (!f) return;
+        const rd = new FileReader();
+        rd.onload = () => {
+          try {
+            records = migrateOld(JSON.parse(rd.result));
+            persist();
+            alert("导入成功");
+          } catch (err) {
+            alert("导入失败：文件格式不正确");
+          }
+        };
+        rd.readAsText(f, "utf-8");
+      }
+      function download(blob, name) {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+      function fillDemo() {
+        if (records.length && !confirm("会追加三条示例数据，是否继续？"))
+          return;
+        [
+          ["2026-04-30", 120000, 350000, 80000, 30000, 210000],
+          ["2026-05-31", 128000, 362000, 90000, 30000, 205000],
+          ["2026-06-29", 135000, 380000, 105000, 32000, 198000],
+        ].forEach((d, i) => {
+          const [dt, c, inv, man, o, liab] = d;
+          records.push({
+            id: Date.now() + "" + i,
+            date: dt,
+            title: dt.slice(0, 7) + " 资产汇总",
+            cash: c,
+            investment: inv,
+            mandate: man,
+            other: o,
+            liability: liab,
+            totalAssets: c + inv + man + o,
+            netWorth: c + inv + man + o - liab,
+            note: "示例数据",
+            accounts: [
+              {
+                name: "招商银行",
+                type: "cash",
+                currency: "CNY",
+                amount: c,
+                rate: 1,
+                baseAmount: c,
+              },
+              {
+                name: "证券账户",
+                type: "investment",
+                currency: "CNY",
+                amount: inv,
+                rate: 1,
+                baseAmount: inv,
+              },
+              {
+                name: "委托投资账户",
+                type: "mandate",
+                currency: "USD",
+                amount: Math.round(man / 7.25),
+                rate: 7.25,
+                baseAmount: man,
+              },
+              {
+                name: "房贷余额",
+                type: "liability",
+                currency: "CNY",
+                amount: liab,
+                rate: 1,
+                baseAmount: liab,
+              },
+            ],
+          });
+        });
+        records.sort((a, b) => a.date.localeCompare(b.date));
+        persist();
+      }
+      function clearAll() {
+        if (confirm("确定清空全部数据吗？建议先导出 JSON 备份。")) {
+          records = [];
+          persist();
+          resetForm();
+        }
+      }
+      function scrollToForm() {
+        formCard.scrollIntoView({ behavior: "smooth" });
+      }
+      function init() {
+        date.value = today();
+
+        const cfg = getCloudConfig();
+
+        if (cfg.token) {
+          githubToken.value = cfg.token;
+        }
+
+        if (cfg.gistId) {
+          gistId.value = cfg.gistId;
+        }
+
+        chartMetric.onchange = drawLineChart;
+
+        structureChartType.onchange = drawStructureChart;
+
+        addAccountLine();
+
+        renderAll();
+      }
+      function saveCloudSettings() {
+        const cfg = {
+          token: document.getElementById("githubToken").value,
+
+          gistId: document.getElementById("gistId").value,
+        };
+
+        localStorage.setItem(
+          CLOUD_CONFIG_KEY,
+
+          JSON.stringify(cfg),
+        );
+
+        alert("配置已保存");
+      }
+      function getCloudConfig() {
+        return JSON.parse(localStorage.getItem(CLOUD_CONFIG_KEY) || "{}");
+      }
+      function updateSyncStatus(msg) {
+        document.getElementById("syncStatus").innerHTML = `
+ ${msg}<br>
+ ${new Date().toLocaleString()}
+ `;
+      }
+      async function testCloudConnection() {
+        const cfg = getCloudConfig();
+
+        try {
+          const res = await fetch(
+            `https://api.github.com/gists/${cfg.gistId}`,
+
+            {
+              headers: {
+                Authorization: `Bearer ${cfg.token}`,
+              },
+            },
+          );
+
+          if (res.ok) {
+            updateSyncStatus("✅连接成功");
+          } else {
+            updateSyncStatus("❌连接失败");
+          }
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+      async function syncUpload() {
+        const cfg = getCloudConfig();
+
+        const today = new Date().toISOString().slice(0, 10);
+
+        const data = JSON.stringify(records, null, 2);
+
+        const body = {
+          files: {
+            "asset-data.json": {
+              content: data,
+            },
+
+            [`backup-${today}.json`]: {
+              content: data,
+            },
+          },
+        };
+
+        const res = await fetch(
+          `https://api.github.com/gists/${cfg.gistId}`,
+
+          {
+            method: "PATCH",
+
+            headers: {
+              Authorization: `Bearer ${cfg.token}`,
+
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify(body),
+          },
+        );
+
+        if (res.ok) {
+          updateSyncStatus("☁上传成功");
+        } else {
+          throw new Error("上传失败");
+        }
+      }
+      async function syncDownload() {
+        const cfg = getCloudConfig();
+
+        const res = await fetch(
+          `https://api.github.com/gists/${cfg.gistId}`,
+
+          {
+            headers: {
+              Authorization: `Bearer ${cfg.token}`,
+            },
+          },
+        );
+
+        const gist = await res.json();
+
+        const json = gist.files["asset-data.json"].content;
+
+        records = JSON.parse(json);
+
+        persist();
+
+        updateSyncStatus("☁已恢复数据");
+      }
+      async function autoSync() {
+        try {
+          await syncUpload();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      window.addEventListener("resize", () => {
+        drawLineChart();
+        drawStructureChart();
+      });
+      init();
+    </script>
+  </body>
+</html>
