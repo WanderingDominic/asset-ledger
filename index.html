@@ -7,11 +7,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
-    <title>小龙资产账本 V4 · 移动优化版</title>
+    <title>小龙资产账本 V4 · 移动全功能版</title>
     <style>
       :root {
         --bg: #f2f2f7;
-        --card: rgba(255, 255, 255, 0.88);
+        --card: rgba(255, 255, 255, 0.9);
         --text: #1c1c1e;
         --muted: #8e8e93;
         --line: rgba(60, 60, 67, 0.12);
@@ -20,6 +20,7 @@
         --pink: #ff2d55;
         --green: #34c759;
         --red: #ff3b30;
+        --orange: #ff9500;
         --shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
         --radius: 18px;
         --radius-sm: 12px;
@@ -35,8 +36,8 @@
         font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
           Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
         background:
-          radial-gradient(circle at 10% 0%, rgba(255, 45, 85, 0.12), transparent 25%),
-          radial-gradient(circle at 90% 5%, rgba(175, 82, 222, 0.12), transparent 28%),
+          radial-gradient(circle at 10% 0%, rgba(255, 45, 85, 0.1), transparent 25%),
+          radial-gradient(circle at 90% 5%, rgba(175, 82, 222, 0.1), transparent 28%),
           var(--bg);
         color: var(--text);
         line-height: 1.45;
@@ -50,12 +51,11 @@
         padding: 16px 14px 40px;
       }
 
-      /* 头部大标题 */
       header {
-        padding: 22px 18px;
+        padding: 20px 18px;
         margin-bottom: 14px;
         border-radius: var(--radius);
-        background: rgba(255, 255, 255, 0.82);
+        background: rgba(255, 255, 255, 0.85);
         box-shadow: var(--shadow);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
@@ -63,7 +63,7 @@
       }
 
       h1 {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 800;
         letter-spacing: -0.03em;
         margin: 0 0 4px;
@@ -75,7 +75,7 @@
         line-height: 1.4;
       }
 
-      /* 顶部指标卡：支持在小屏幕滚动或紧凑网格 */
+      /* 核心指标看板 */
       .summary {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -116,7 +116,7 @@
       }
 
       .metric .v {
-        font-size: 20px;
+        font-size: 19px;
         font-weight: 800;
         letter-spacing: -0.02em;
         font-variant-numeric: tabular-nums;
@@ -129,6 +129,40 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      /* 多维周期对比看板卡片 */
+      .period-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .period-item {
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: var(--radius-sm);
+        padding: 10px 8px;
+        text-align: center;
+        border: 1px solid var(--line);
+      }
+
+      .period-item .pk {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      .period-item .pv {
+        font-size: 14px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .period-item .psub {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 2px;
       }
 
       .grid {
@@ -187,7 +221,6 @@
         margin-bottom: 12px;
       }
 
-      /* 统一移动端表单输入体验，font-size: 16px 彻底消除 iOS 自动放大 */
       input,
       select,
       textarea {
@@ -196,7 +229,7 @@
         border-radius: var(--radius-sm);
         background: rgba(255, 255, 255, 0.95);
         padding: 10px 12px;
-        font-size: 16px;
+        font-size: 16px; /* 防止 iOS Safari 自动缩放 */
         color: var(--text);
         outline: none;
         -webkit-appearance: none;
@@ -233,7 +266,6 @@
         gap: 10px;
       }
 
-      /* 按钮尺寸扩大，适配手指按压 */
       button,
       .btn-label {
         border: 0;
@@ -281,14 +313,10 @@
         box-shadow: none;
       }
 
-      .pos {
-        color: var(--green);
-      }
-      .neg {
-        color: var(--red);
-      }
+      .pos { color: var(--green); }
+      .neg { color: var(--red); }
 
-      /* 移动端卡片式历史记录流 */
+      /* 卡片式历史记录流 */
       .history-list {
         display: flex;
         flex-direction: column;
@@ -319,6 +347,22 @@
       .history-date {
         font-size: 12px;
         color: var(--muted);
+      }
+
+      /* 收益拆解胶囊条 */
+      .breakdown-strip {
+        display: flex;
+        background: rgba(0, 0, 0, 0.035);
+        border-radius: 8px;
+        padding: 6px 10px;
+        gap: 10px;
+        font-size: 11px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+
+      .breakdown-strip span b {
+        font-variant-numeric: tabular-nums;
       }
 
       .history-data-grid {
@@ -366,7 +410,6 @@
         display: none !important;
       }
 
-      /* 图表容器 */
       .chartRow {
         display: flex;
         flex-direction: column;
@@ -409,7 +452,7 @@
         margin-right: 6px;
       }
 
-      /* 明细录入卡片式单行 */
+      /* 账户录入单项 */
       .account-line {
         display: flex;
         flex-direction: column;
@@ -442,7 +485,21 @@
         font-size: 12px;
       }
 
-      /* 底部常驻悬浮快捷栏 */
+      /* 实时投资盈亏计算提示卡 */
+      .gain-calc-preview {
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        background: rgba(52, 199, 89, 0.09);
+        border: 1px solid rgba(52, 199, 89, 0.25);
+        color: #1b5e20;
+        font-size: 12px;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* 底部常驻悬浮栏 */
       .fixed-bottom-bar {
         position: fixed;
         bottom: 0;
@@ -465,10 +522,10 @@
         font-size: 15px;
       }
 
-      /* 平板及大屏自适应恢复 */
+      /* 电脑端平板适配 */
       @media (min-width: 768px) {
         .summary {
-          grid-template-columns: repeat(5, 1fr);
+          grid-template-columns: repeat(4, 1fr);
         }
         .summary .metric:first-child {
           grid-column: span 1;
@@ -517,12 +574,18 @@
       <header>
         <h1>小龙资产账本</h1>
         <div class="sub">
-          V4 移动强化版：优化触控操作、卡片流式明细、键盘自动折算。
+          V4 增强版：分离储蓄与投资盈亏 · 一键实时汇率 · 多维周期对比。
         </div>
       </header>
 
       <!-- 核心指标摘要 -->
       <section class="summary" id="summary"></section>
+
+      <!-- 周期对比卡片 (YTD / YoY / 累计回报) -->
+      <section class="card" id="periodCard">
+        <h2>📊 多维财务周期对比</h2>
+        <div class="period-grid" id="periodGrid"></div>
+      </section>
 
       <div class="grid">
         <!-- 图表展示 -->
@@ -595,12 +658,38 @@
             </div>
           </div>
 
+          <!-- 储蓄净投入与投资收益分离核心字段 -->
+          <div class="field">
+            <label>本期外部净投入 / 新增储蓄 CNY (可选)</label>
+            <input
+              id="savings"
+              type="number"
+              step="0.01"
+              inputmode="decimal"
+              placeholder="本期工资结余存入填正数，大额开支取出填负数，无变动填0"
+            />
+            <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">
+              💡 系统据此自动计算：<b>投资盈亏 = 本期净资产变动 - 外部净投入</b>
+            </div>
+          </div>
+
+          <!-- 动态收益计算预览条 -->
+          <div id="gainPreviewBar" class="gain-calc-preview hide">
+            <span>预计本期投资盈亏：<b id="previewGainVal">--</b></span>
+            <span id="previewGainRate" style="font-size:11px;"></span>
+          </div>
+
           <div class="hint">
-            汇率在每笔账户中按原币直接录入（如 CNY 汇率填 1，USD 汇率填 7.25）。系统将自动计算人民币折算值。
+            汇率在各账户按原币录入。点击下方按钮可自动联网更新最新外币汇率。
           </div>
 
           <div class="field">
-            <label>账户与负债明细</label>
+            <div class="between" style="margin-bottom: 6px;">
+              <label style="margin: 0;">账户与负债明细</label>
+              <button class="ghost" id="rateBtn" style="padding: 6px 12px; font-size: 12px;" onclick="fetchLiveRates()">
+                ⚡ 一键获取最新汇率
+              </button>
+            </div>
             <div id="accountLines"></div>
             <button
               class="ghost"
@@ -643,7 +732,7 @@
 
           <div class="field">
             <label>备注说明</label>
-            <textarea id="note" placeholder="记录当月的重大资产变动或注意事项..."></textarea>
+            <textarea id="note" placeholder="记录当月的重大资产变动、投资心得或市场环境..."></textarea>
           </div>
 
           <div class="row" style="margin-top: 8px">
@@ -684,7 +773,7 @@
           <div id="syncStatus" class="small" style="margin-top: 10px">尚未同步</div>
         </section>
 
-        <!-- 工具与快捷操作 -->
+        <!-- 数据辅助 -->
         <section class="card">
           <h2>数据辅助</h2>
           <div class="row">
@@ -765,8 +854,8 @@
 
       function esc(s) {
         return String(s ?? "").replace(
-          /[&<>"]/g,
-          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m],
+          /[&<>"']/g,
+          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m],
         );
       }
 
@@ -775,6 +864,7 @@
           let y = { ...x };
           y.mandate = num(y.mandate);
           y.liability = num(y.liability);
+          y.savings = num(y.savings);
           y.totalAssets = num(
             y.totalAssets ||
               num(y.cash) + num(y.investment) + num(y.mandate) + num(y.other),
@@ -815,6 +905,38 @@
       function persist() {
         localStorage.setItem(KEY, JSON.stringify(records));
         renderAll();
+      }
+
+      /* 一键拉取实时汇率 */
+      async function fetchLiveRates() {
+        const btn = document.getElementById("rateBtn");
+        const origText = btn.innerHTML;
+        btn.innerHTML = "⏳ 获取汇率中...";
+        btn.disabled = true;
+        try {
+          const res = await fetch("https://open.er-api.com/v6/latest/CNY");
+          if (!res.ok) throw new Error("汇率服务暂不可用");
+          const data = await res.json();
+          const rates = data.rates;
+          let count = 0;
+          lines().forEach((line) => {
+            const cur = (line.querySelector(".acc-currency").value || "CNY").trim().toUpperCase();
+            if (cur === "CNY") {
+              line.querySelector(".acc-rate").value = 1;
+            } else if (rates[cur]) {
+              const cnyRate = Number((1 / rates[cur]).toFixed(4));
+              line.querySelector(".acc-rate").value = cnyRate;
+              count++;
+            }
+          });
+          calcTotals();
+          alert(`已成功自动更新 ${count} 个外币账户的最新汇率！`);
+        } catch (err) {
+          alert("获取实时汇率失败：" + err.message + "，您仍可手动修改汇率。");
+        } finally {
+          btn.innerHTML = origText;
+          btn.disabled = false;
+        }
       }
 
       function accountTemplate(a = {}) {
@@ -922,14 +1044,62 @@
             el.value = sums[k] ? sums[k].toFixed(2) : "";
         });
 
-        const net = sums.cash + sums.investment + sums.mandate + sums.other - sums.liability;
-        document.getElementById("netWorthPreview").value = fmt(net);
+        const currentNet = sums.cash + sums.investment + sums.mandate + sums.other - sums.liability;
+        document.getElementById("netWorthPreview").value = fmt(currentNet);
+
+        // 动态投资盈亏实时测算
+        calcGainPreview(currentNet);
       }
+
+      function calcGainPreview(currentNet) {
+        const bar = document.getElementById("gainPreviewBar");
+        if (!records.length) {
+          bar.classList.add("hide");
+          return;
+        }
+
+        // 找到对比基期（如果是编辑旧记录，找它的前一条；如果是新增，找最新的一条）
+        let prevRec = null;
+        if (editingId) {
+          const idx = records.findIndex((r) => r.id === editingId);
+          if (idx > 0) prevRec = records[idx - 1];
+        } else {
+          prevRec = records[records.length - 1];
+        }
+
+        if (!prevRec) {
+          bar.classList.add("hide");
+          return;
+        }
+
+        const savingsVal = num(document.getElementById("savings").value);
+        const netDelta = currentNet - prevRec.netWorth;
+        const gain = netDelta - savingsVal;
+        const base = prevRec.netWorth + Math.max(0, savingsVal);
+        const gainRate = base > 0 ? (gain / base) * 100 : 0;
+
+        bar.classList.remove("hide");
+        const valEl = document.getElementById("previewGainVal");
+        valEl.textContent = (gain >= 0 ? "+" : "") + fmt(gain);
+        valEl.className = gain >= 0 ? "pos" : "neg";
+
+        document.getElementById("previewGainRate").textContent = `(本期收益率: ${(gain >= 0 ? "+" : "") + gainRate.toFixed(2)}%)`;
+      }
+
+      document.getElementById("savings")?.addEventListener("input", () => {
+        const net = num(document.getElementById("cash").value) +
+          num(document.getElementById("investment").value) +
+          num(document.getElementById("mandate").value) +
+          num(document.getElementById("other").value) -
+          num(document.getElementById("liability").value);
+        calcGainPreview(net);
+      });
 
       function saveRecord() {
         calcTotals();
         const dateEl = document.getElementById("date"),
           titleEl = document.getElementById("title"),
+          savingsEl = document.getElementById("savings"),
           cashEl = document.getElementById("cash"),
           investmentEl = document.getElementById("investment"),
           mandateEl = document.getElementById("mandate"),
@@ -941,6 +1111,7 @@
           id: editingId || Date.now().toString(),
           date: dateEl.value || today(),
           title: titleEl.value.trim() || (dateEl.value || today()) + " 资产汇总",
+          savings: num(savingsEl.value),
           cash: num(cashEl.value),
           investment: num(investmentEl.value),
           mandate: num(mandateEl.value),
@@ -975,6 +1146,7 @@
         document.getElementById("deleteEditing").classList.add("hide");
         document.getElementById("date").value = today();
         document.getElementById("title").value = (document.getElementById("date").value || today()) + " 资产汇总";
+        document.getElementById("savings").value = "";
         document.getElementById("note").value = "复制自 " + r.date + "，请核对各账户金额";
         const container = document.getElementById("accountLines");
         container.innerHTML = "";
@@ -994,6 +1166,7 @@
         document.getElementById("deleteEditing").classList.remove("hide");
         document.getElementById("date").value = r.date;
         document.getElementById("title").value = r.title || "";
+        document.getElementById("savings").value = r.savings || "";
         document.getElementById("cash").value = r.cash || "";
         document.getElementById("investment").value = r.investment || "";
         document.getElementById("mandate").value = r.mandate || "";
@@ -1014,12 +1187,14 @@
         document.getElementById("deleteEditing").classList.add("hide");
         document.getElementById("date").value = today();
         document.getElementById("title").value = "";
+        document.getElementById("savings").value = "";
         document.getElementById("cash").value = "";
         document.getElementById("investment").value = "";
         document.getElementById("mandate").value = "";
         document.getElementById("other").value = "";
         document.getElementById("liability").value = "";
         document.getElementById("note").value = "";
+        document.getElementById("gainPreviewBar").classList.add("hide");
         document.getElementById("accountLines").innerHTML = "";
         addAccountLine();
         calcTotals();
@@ -1037,11 +1212,70 @@
         resetForm();
       }
 
+      /* 多维周期对比计算 */
+      function getPeriodMetrics() {
+        if (!records.length) return null;
+        const latest = records[records.length - 1];
+        const curYear = latest.date.slice(0, 4);
+
+        // 1. 年初基点 (找上一年最后一条，或者今年第一条)
+        const prevYearRecords = records.filter((r) => r.date.slice(0, 4) < curYear);
+        const ytdBase = prevYearRecords.length
+          ? prevYearRecords[prevYearRecords.length - 1]
+          : records.find((r) => r.date.slice(0, 4) === curYear);
+
+        let ytdDelta = 0, ytdRate = 0;
+        if (ytdBase && ytdBase !== latest) {
+          ytdDelta = latest.netWorth - ytdBase.netWorth;
+          ytdRate = ytdBase.netWorth ? (ytdDelta / ytdBase.netWorth) * 100 : 0;
+        }
+
+        // 2. 近一年同比 (YoY): 寻找大约 300~420 天前的记录
+        const targetDate = new Date(new Date(latest.date).getTime() - 365 * 86400000);
+        let yoyBase = null, minDiff = Infinity;
+        records.forEach((r) => {
+          if (r === latest) return;
+          const diff = Math.abs(new Date(r.date).getTime() - targetDate.getTime());
+          if (diff < minDiff && diff < 120 * 86400000) {
+            minDiff = diff;
+            yoyBase = r;
+          }
+        });
+
+        let yoyDelta = 0, yoyRate = 0;
+        if (yoyBase) {
+          yoyDelta = latest.netWorth - yoyBase.netWorth;
+          yoyRate = yoyBase.netWorth ? (yoyDelta / yoyBase.netWorth) * 100 : 0;
+        }
+
+        // 3. 历史累计投资回报与累计净投入
+        let totalSavings = 0, totalGain = 0;
+        for (let i = 1; i < records.length; i++) {
+          const cur = records[i], prev = records[i - 1];
+          const s = num(cur.savings);
+          totalSavings += s;
+          totalGain += (cur.netWorth - prev.netWorth - s);
+        }
+
+        return {
+          ytdDelta, ytdRate, ytdBaseDate: ytdBase ? ytdBase.date : null,
+          yoyDelta, yoyRate, yoyBaseDate: yoyBase ? yoyBase.date : null,
+          totalGain, totalSavings
+        };
+      }
+
       function renderSummary() {
         const summary = document.getElementById("summary"),
           l = records[records.length - 1],
-          p = records[records.length - 2],
-          d = l && p ? l.netWorth - p.netWorth : 0;
+          p = records[records.length - 2];
+
+        let d = 0, gain = 0, savings = 0;
+        if (l && p) {
+          d = l.netWorth - p.netWorth;
+          savings = num(l.savings);
+          gain = d - savings;
+        }
+
         summary.innerHTML = `
           <div class="metric">
             <div class="k">最新净资产</div>
@@ -1049,24 +1283,48 @@
             <div class="delta">${l ? l.date + " · 最新归档" : "暂无记录"}</div>
           </div>
           <div class="metric">
+            <div class="k">本期投资盈亏</div>
+            <div class="v ${gain >= 0 ? "pos" : "neg"}">${l && p ? (gain >= 0 ? "+" : "") + fmt(gain) : "--"}</div>
+            <div class="delta">${l && p ? "外部净投入 " + fmt(savings) : "需至少2期"}</div>
+          </div>
+          <div class="metric">
             <div class="k">总资产 (不含负债)</div>
             <div class="v">${l ? fmt(l.totalAssets) : "--"}</div>
-            <div class="delta">${l ? "现金/投资/委托等" : "--"}</div>
+            <div class="delta">现金/投资/委托等</div>
           </div>
           <div class="metric">
             <div class="k">总负债</div>
             <div class="v neg">${l ? fmt(l.liability) : "--"}</div>
             <div class="delta">贷款 / 信用卡</div>
           </div>
-          <div class="metric">
-            <div class="k">较上期变动</div>
-            <div class="v ${d >= 0 ? "pos" : "neg"}">${l && p ? (d >= 0 ? "+" : "") + fmt(d) : "--"}</div>
-            <div class="delta">${l && p ? p.date.slice(5) + " → " + l.date.slice(5) : "需至少2期"}</div>
+        `;
+
+        renderPeriodCard();
+      }
+
+      function renderPeriodCard() {
+        const grid = document.getElementById("periodGrid");
+        const pm = getPeriodMetrics();
+        if (!pm || records.length < 2) {
+          grid.innerHTML = '<div style="grid-column: span 3; color: var(--muted); font-size:12px; text-align:center; padding:10px;">需录入至少两期不同时段记录以生成对比数据</div>';
+          return;
+        }
+
+        grid.innerHTML = `
+          <div class="period-item">
+            <div class="pk">年初至今 (YTD)</div>
+            <div class="pv ${pm.ytdDelta >= 0 ? "pos" : "neg"}">${(pm.ytdDelta >= 0 ? "+" : "") + fmt(pm.ytdDelta)}</div>
+            <div class="psub">${(pm.ytdRate >= 0 ? "+" : "") + pm.ytdRate.toFixed(1)}% (${pm.ytdBaseDate ? pm.ytdBaseDate.slice(5) : "年初"})</div>
           </div>
-          <div class="metric">
-            <div class="k">记录期数</div>
-            <div class="v">${records.length}</div>
-            <div class="delta">定期记录看趋势</div>
+          <div class="period-item">
+            <div class="pk">近一年 (YoY)</div>
+            <div class="pv ${pm.yoyDelta >= 0 ? "pos" : "neg"}">${pm.yoyBaseDate ? (pm.yoyDelta >= 0 ? "+" : "") + fmt(pm.yoyDelta) : "--"}</div>
+            <div class="psub">${pm.yoyBaseDate ? (pm.yoyRate >= 0 ? "+" : "") + pm.yoyRate.toFixed(1) + "%" : "数据不足1年"}</div>
+          </div>
+          <div class="period-item">
+            <div class="pk">累计投资回报</div>
+            <div class="pv ${pm.totalGain >= 0 ? "pos" : "neg"}">${(pm.totalGain >= 0 ? "+" : "") + fmt(pm.totalGain)}</div>
+            <div class="psub">累计储蓄投入 ${fmt(pm.totalSavings)}</div>
           </div>
         `;
       }
@@ -1082,8 +1340,14 @@
           <div class="history-list">
             ${[...records]
               .reverse()
-              .map(
-                (r) => `
+              .map((r, ri) => {
+                const origIdx = records.indexOf(r);
+                const prev = origIdx > 0 ? records[origIdx - 1] : null;
+                const netDelta = prev ? r.netWorth - prev.netWorth : 0;
+                const savings = num(r.savings);
+                const gain = prev ? netDelta - savings : 0;
+
+                return `
                 <div class="history-card">
                   <div class="history-header">
                     <div>
@@ -1092,6 +1356,15 @@
                     </div>
                     <span class="pill">净资 ${fmt(r.netWorth)}</span>
                   </div>
+
+                  ${prev ? `
+                    <div class="breakdown-strip">
+                      <span>变动: <b class="${netDelta >= 0 ? "pos" : "neg"}">${(netDelta >= 0 ? "+" : "") + fmt(netDelta)}</b></span>
+                      <span>储蓄投入: <b>${fmt(savings)}</b></span>
+                      <span>投资盈亏: <b class="${gain >= 0 ? "pos" : "neg"}">${(gain >= 0 ? "+" : "") + fmt(gain)}</b></span>
+                    </div>
+                  ` : ""}
+
                   <div class="history-data-grid">
                     <div class="data-item">
                       <div class="k">总资产</div>
@@ -1124,8 +1397,8 @@
                     <button class="ghost danger" style="padding: 6px 14px; font-size: 13px; color:var(--red);" onclick="deleteRecord('${r.id}')">删除</button>
                   </div>
                 </div>
-              `
-              )
+              `;
+              })
               .join("")}
           </div>
         `;
@@ -1348,6 +1621,7 @@
           [
             "日期",
             "名称",
+            "本期外部投入(储蓄)CNY",
             "净资产CNY",
             "总资产CNY",
             "负债CNY",
@@ -1362,6 +1636,7 @@
           summaryRows.push([
             r.date,
             r.title,
+            r.savings,
             r.netWorth,
             r.totalAssets,
             r.liability,
@@ -1597,15 +1872,16 @@
       function fillDemo() {
         if (records.length && !confirm("会追加三条示例数据，是否继续？")) return;
         [
-          ["2026-04-30", 120000, 350000, 80000, 30000, 210000],
-          ["2026-05-31", 128000, 362000, 90000, 30000, 205000],
-          ["2026-06-29", 135000, 380000, 105000, 32000, 198000],
+          ["2025-06-30", 120000, 350000, 80000, 30000, 210000, 0],
+          ["2025-12-31", 128000, 362000, 90000, 30000, 205000, 15000],
+          ["2026-06-29", 135000, 380000, 105000, 32000, 198000, 20000],
         ].forEach((d, i) => {
-          const [dt, c, inv, man, o, liab] = d;
+          const [dt, c, inv, man, o, liab, sav] = d;
           records.push({
             id: Date.now() + "" + i,
             date: dt,
             title: dt.slice(0, 7) + " 资产汇总",
+            savings: sav,
             cash: c,
             investment: inv,
             mandate: man,
