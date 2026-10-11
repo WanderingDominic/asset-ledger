@@ -485,7 +485,7 @@
         font-size: 12px;
       }
 
-      /* 实时投资盈亏计算提示卡 */
+      /* 实时综合净盈余计算提示卡 */
       .gain-calc-preview {
         padding: 10px 12px;
         border-radius: var(--radius-sm);
@@ -574,7 +574,7 @@
       <header>
         <h1>小龙资产账本</h1>
         <div class="sub">
-          V4 增强版：分离储蓄与投资盈亏 · 一键实时汇率 · 多维周期对比。
+          V4 增强版：投入与综合净盈余分离 · 一键实时汇率 · 多维周期对比。
         </div>
       </header>
 
@@ -658,24 +658,25 @@
             </div>
           </div>
 
-          <!-- 储蓄净投入与投资收益分离核心字段 -->
+          <!-- 外部净投入核心字段 -->
           <div class="field">
-            <label>本期外部净投入 / 新增储蓄 CNY (可选)</label>
+            <label>本期外部净投入 / 新增结余 CNY (可选)</label>
             <input
               id="savings"
               type="number"
               step="0.01"
               inputmode="decimal"
-              placeholder="本期工资结余存入填正数，大额开支取出填负数，无变动填0"
+              placeholder="外部薪资新转入填正数，大额支出取出填负数，无变动填0"
             />
-            <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">
-              💡 系统据此自动计算：<b>投资盈亏 = 本期净资产变动 - 外部净投入</b>
+            <div style="font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5;">
+              💡 <b>综合净盈余 = 本期净资产变动 - 外部净投入</b><br>
+              反映在您预定的储蓄/提现之外，由<b>投资盈亏</b>与<b>日常收支结余/超支</b>共同带来的超额留存。
             </div>
           </div>
 
-          <!-- 动态收益计算预览条 -->
+          <!-- 动态综合净盈余测算条 -->
           <div id="gainPreviewBar" class="gain-calc-preview hide">
-            <span>预计本期投资盈亏：<b id="previewGainVal">--</b></span>
+            <span>预计本期综合净盈余：<b id="previewGainVal">--</b></span>
             <span id="previewGainRate" style="font-size:11px;"></span>
           </div>
 
@@ -732,7 +733,7 @@
 
           <div class="field">
             <label>备注说明</label>
-            <textarea id="note" placeholder="记录当月的重大资产变动、投资心得或市场环境..."></textarea>
+            <textarea id="note" placeholder="记录当月的重大资产变动、大额花销或市场环境..."></textarea>
           </div>
 
           <div class="row" style="margin-top: 8px">
@@ -1047,7 +1048,7 @@
         const currentNet = sums.cash + sums.investment + sums.mandate + sums.other - sums.liability;
         document.getElementById("netWorthPreview").value = fmt(currentNet);
 
-        // 动态投资盈亏实时测算
+        // 动态综合净盈余实时测算
         calcGainPreview(currentNet);
       }
 
@@ -1074,16 +1075,16 @@
 
         const savingsVal = num(document.getElementById("savings").value);
         const netDelta = currentNet - prevRec.netWorth;
-        const gain = netDelta - savingsVal;
+        const surplus = netDelta - savingsVal;
         const base = prevRec.netWorth + Math.max(0, savingsVal);
-        const gainRate = base > 0 ? (gain / base) * 100 : 0;
+        const surplusRate = base > 0 ? (surplus / base) * 100 : 0;
 
         bar.classList.remove("hide");
         const valEl = document.getElementById("previewGainVal");
-        valEl.textContent = (gain >= 0 ? "+" : "") + fmt(gain);
-        valEl.className = gain >= 0 ? "pos" : "neg";
+        valEl.textContent = (surplus >= 0 ? "+" : "") + fmt(surplus);
+        valEl.className = surplus >= 0 ? "pos" : "neg";
 
-        document.getElementById("previewGainRate").textContent = `(本期收益率: ${(gain >= 0 ? "+" : "") + gainRate.toFixed(2)}%)`;
+        document.getElementById("previewGainRate").textContent = `(超额盈余率: ${(surplus >= 0 ? "+" : "") + surplusRate.toFixed(2)}%)`;
       }
 
       document.getElementById("savings")?.addEventListener("input", () => {
@@ -1248,19 +1249,19 @@
           yoyRate = yoyBase.netWorth ? (yoyDelta / yoyBase.netWorth) * 100 : 0;
         }
 
-        // 3. 历史累计投资回报与累计净投入
-        let totalSavings = 0, totalGain = 0;
+        // 3. 历史累计综合净盈余 (除净投入外的资产总增长)
+        let totalSavings = 0, totalSurplus = 0;
         for (let i = 1; i < records.length; i++) {
           const cur = records[i], prev = records[i - 1];
           const s = num(cur.savings);
           totalSavings += s;
-          totalGain += (cur.netWorth - prev.netWorth - s);
+          totalSurplus += (cur.netWorth - prev.netWorth - s);
         }
 
         return {
           ytdDelta, ytdRate, ytdBaseDate: ytdBase ? ytdBase.date : null,
           yoyDelta, yoyRate, yoyBaseDate: yoyBase ? yoyBase.date : null,
-          totalGain, totalSavings
+          totalSurplus, totalSavings
         };
       }
 
@@ -1269,11 +1270,11 @@
           l = records[records.length - 1],
           p = records[records.length - 2];
 
-        let d = 0, gain = 0, savings = 0;
+        let d = 0, surplus = 0, savings = 0;
         if (l && p) {
           d = l.netWorth - p.netWorth;
           savings = num(l.savings);
-          gain = d - savings;
+          surplus = d - savings;
         }
 
         summary.innerHTML = `
@@ -1283,8 +1284,8 @@
             <div class="delta">${l ? l.date + " · 最新归档" : "暂无记录"}</div>
           </div>
           <div class="metric">
-            <div class="k">本期投资盈亏</div>
-            <div class="v ${gain >= 0 ? "pos" : "neg"}">${l && p ? (gain >= 0 ? "+" : "") + fmt(gain) : "--"}</div>
+            <div class="k">本期综合净盈余</div>
+            <div class="v ${surplus >= 0 ? "pos" : "neg"}">${l && p ? (surplus >= 0 ? "+" : "") + fmt(surplus) : "--"}</div>
             <div class="delta">${l && p ? "外部净投入 " + fmt(savings) : "需至少2期"}</div>
           </div>
           <div class="metric">
@@ -1322,9 +1323,9 @@
             <div class="psub">${pm.yoyBaseDate ? (pm.yoyRate >= 0 ? "+" : "") + pm.yoyRate.toFixed(1) + "%" : "数据不足1年"}</div>
           </div>
           <div class="period-item">
-            <div class="pk">累计投资回报</div>
-            <div class="pv ${pm.totalGain >= 0 ? "pos" : "neg"}">${(pm.totalGain >= 0 ? "+" : "") + fmt(pm.totalGain)}</div>
-            <div class="psub">累计储蓄投入 ${fmt(pm.totalSavings)}</div>
+            <div class="pk">累计综合净盈余</div>
+            <div class="pv ${pm.totalSurplus >= 0 ? "pos" : "neg"}">${(pm.totalSurplus >= 0 ? "+" : "") + fmt(pm.totalSurplus)}</div>
+            <div class="psub">累计净投入 ${fmt(pm.totalSavings)}</div>
           </div>
         `;
       }
@@ -1345,7 +1346,7 @@
                 const prev = origIdx > 0 ? records[origIdx - 1] : null;
                 const netDelta = prev ? r.netWorth - prev.netWorth : 0;
                 const savings = num(r.savings);
-                const gain = prev ? netDelta - savings : 0;
+                const surplus = prev ? netDelta - savings : 0;
 
                 return `
                 <div class="history-card">
@@ -1359,9 +1360,9 @@
 
                   ${prev ? `
                     <div class="breakdown-strip">
-                      <span>变动: <b class="${netDelta >= 0 ? "pos" : "neg"}">${(netDelta >= 0 ? "+" : "") + fmt(netDelta)}</b></span>
-                      <span>储蓄投入: <b>${fmt(savings)}</b></span>
-                      <span>投资盈亏: <b class="${gain >= 0 ? "pos" : "neg"}">${(gain >= 0 ? "+" : "") + fmt(gain)}</b></span>
+                      <span>净变动: <b class="${netDelta >= 0 ? "pos" : "neg"}">${(netDelta >= 0 ? "+" : "") + fmt(netDelta)}</b></span>
+                      <span>外部净投入: <b>${fmt(savings)}</b></span>
+                      <span>综合净盈余: <b class="${surplus >= 0 ? "pos" : "neg"}">${(surplus >= 0 ? "+" : "") + fmt(surplus)}</b></span>
                     </div>
                   ` : ""}
 
@@ -1621,7 +1622,7 @@
           [
             "日期",
             "名称",
-            "本期外部投入(储蓄)CNY",
+            "本期外部净投入CNY",
             "净资产CNY",
             "总资产CNY",
             "负债CNY",
